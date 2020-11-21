@@ -6,11 +6,12 @@ type FillBall = FillBall (Maybe Int, Maybe Int)
 
 type alias Model = {
   frameList: List Frame,
-  fillBall: FillBall
+  fillBall: FillBall,
+  lastHit: Frame
   }
 
 init: Model
-init = testModel
+init = emptyModel
 
 frameToString: Frame -> String
 frameToString frameResult =
@@ -41,5 +42,7 @@ testModel = {
       Spare 6,
       Spare 7
     ],
-  fillBall = FillBall (Just 3, Nothing)
+  fillBall = FillBall (Just 3, Nothing),
+  lastHit = HalfFrame 3
   }
+emptyModel = {frameList = [], fillBall = FillBall (Nothing, Nothing), lastHit =  OpenFrame 0 0}
