@@ -1,5 +1,11 @@
-module Main exposing (main)
+module Main exposing (..)
 
-import Html exposing (text)
+import Browser
+import Model exposing (Model, init)
+import Update exposing (update)
+import View exposing (view)
 
-main = text "hi"
+main =
+  Browser.sandbox { init = init, update = update, view = view }
+
+
