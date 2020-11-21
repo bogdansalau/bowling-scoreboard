@@ -83,7 +83,7 @@ view model =
            ([td [style "text-align" "center"
                  , colspan 11
                 ]
-                [ text "Type X for Strike, any digit in other case" ]])
+                [ text "Type \"x\" for Strike or type a digit for the number of pins hit" ]])
      ]
     )
 
