@@ -2,12 +2,13 @@ module Model exposing (..)
 
 import String exposing (fromInt)
 type Frame = Strike | Spare Int | HalfFrame Int | OpenFrame Int Int
-type FillBall = FillBall (Maybe Int, Maybe Int)
+type alias FillBalls = (Maybe Int, Maybe Int)
 
 type alias Model = {
   frameList: List Frame,
-  fillBall: FillBall,
-  lastHit: Frame
+  fillBalls: FillBalls,
+  lastFrame: Frame,
+  isRoundComplete: Bool
   }
 
 init: Model
@@ -21,28 +22,14 @@ frameToString frameResult =
     HalfFrame x -> fromInt x
     OpenFrame x y -> fromInt x ++ " " ++ fromInt y
 
-fillBallToString: FillBall -> String
-fillBallToString fillBall =
-  case fillBall of
-    FillBall (Just x, Just y) -> fromInt x ++ " " ++ fromInt y
-    FillBall (Just x, Nothing) -> fromInt x
-    FillBall (_, _) -> ""
+fillBallToString: FillBalls -> String
+fillBallToString fillBalls =
+  let
+    computeValue roll = if roll == 10 then "X" else fromInt roll
+  in
+    case fillBalls of
+      (Just roll1, Just roll2) -> computeValue roll1 ++ " " ++ computeValue roll2
+      (Just roll1, Nothing) -> computeValue roll1
+      (_, _) -> ""
 
-
-testModel = {
-  frameList = [
-      Strike,
-      Spare 7,
-      OpenFrame 7 2,
-      Spare 9,
-      Strike,
-      Strike,
-      Strike,
-      OpenFrame 2 3,
-      Spare 6,
-      Spare 7
-    ],
-  fillBall = FillBall (Just 3, Nothing),
-  lastHit = HalfFrame 3
-  }
-emptyModel = {frameList = [], fillBall = FillBall (Nothing, Nothing), lastHit =  OpenFrame 0 0}
+emptyModel = {frameList = [], fillBalls = (Nothing, Nothing), lastFrame =  OpenFrame 0 0, isRoundComplete = False}
