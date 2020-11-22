@@ -1,0 +1,35 @@
+table {
+    border: 2px solid black;
+    height: 360px;
+    margin: 10px;
+}
+
+th {
+    text-align: center;
+    width: 56px;
+    height: 36px;
+}
+
+tr {
+    margin-top: -2px;
+}
+
+td {
+    text-align: center;
+    width: 52px;
+    height: 32px;
+}
+
+#score-cell {
+    border: 2px solid black;
+}
+
+#row-start {
+    text-align: center;
+    width: 56px;
+    height: 36px;
+}
+
+input {
+    width: 68px;
+}
