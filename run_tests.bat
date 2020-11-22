@@ -1,2 +1,3 @@
 del elm.js
-elm-test
+call elm-test
+PAUSE
