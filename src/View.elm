@@ -57,7 +57,7 @@ view model =
            ([td [ id "row-start" ]
                 [ text "Frame Score:" ]]
                 ++
-                (map scoreToTableData (take 10 <| computeScore (flattenModel (reverse model.frameList) model.fillBalls))))
+                (map scoreToTableData <| computeScore <| flattenModel model.fillBalls <| reverse model.frameList ))
       ]
       ++
       [ tr
@@ -65,7 +65,7 @@ view model =
            ([td [ id "row-start" ]
                 [ text "Total:" ]]
                 ++
-                (map scoreToTableData (take 10 <| totalScore <| computeScore (flattenModel (reverse model.frameList) model.fillBalls))))
+                (map scoreToTableData <| take 10 <| totalScore <| computeScore <| flattenModel model.fillBalls <| reverse model.frameList ))
       ]
       ++
       [ tr

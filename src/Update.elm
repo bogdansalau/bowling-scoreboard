@@ -1,6 +1,6 @@
 module Update exposing (..)
 
-import List exposing (head, length, map)
+import List exposing (head, length, map, take)
 import Maybe exposing (withDefault)
 import Model exposing (FillBalls, Frame(..), Model, emptyModel)
 import String exposing (toInt)
@@ -95,7 +95,6 @@ handleHalfFrame model lastRoll currentRoll =
            then addSpare model lastRoll
            else model -- you can't hit more than 10 pins, input error, igore it
 
-
 addStrike: Model -> Model
 addStrike model = Debug.log "STRIKE" { model | frameList = Strike::model.frameList, lastFrame = Strike }
 
@@ -115,25 +114,29 @@ addOpenFrame model a b =
     , lastFrame = OpenFrame a b }
 
 computeScore: List Int -> List Int
-computeScore frames =
-  case frames of
-    [] -> []
-    x::y::z::zs -> if x == 10
-                     then (x + y + z)::(computeScore (y::z::zs))
-                     else
-                       if x + y == 10
-                         then (x + y + z)::(computeScore (z::zs))
-                         else (x + y)::(computeScore (z::zs))
-    x::y::ys -> if x == 10
-                  then 0::(computeScore (y::ys))
-                  else
-                    if x + y == 10
-                      then 0::(computeScore (y::ys))
-                      else (x + y)::(computeScore ys)
-    _::_ -> [0]
+computeScore rolls =
+  let
+    score: List Int -> List Int
+    score r = case r of
+                 [] -> []
+                 x::y::z::zs -> if x == 10
+                                  then (x + y + z)::(score (y::z::zs))
+                                  else
+                                    if x + y == 10
+                                      then (x + y + z)::(score (z::zs))
+                                      else (x + y)::(score (z::zs))
+                 x::y::ys -> if x == 10
+                               then 0::(score (y::ys))
+                               else
+                                 if x + y == 10
+                                   then 0::(score (y::ys))
+                                   else (x + y)::(score ys)
+                 _::_ -> [0]
+  in
+    take 10 <| score rolls
 
-flattenModel: List Frame -> FillBalls -> List Int
-flattenModel frames fillBalls =
+flattenModel: FillBalls -> List Frame  -> List Int
+flattenModel fillBalls frames =
   let
     flattenFrames: List Frame -> List Int
     flattenFrames list =
